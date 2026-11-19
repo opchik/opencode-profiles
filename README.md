@@ -1,7 +1,7 @@
 # opencode-profiles
 
 ## Настройка
-1. Склонировать в ~/.config
+1. Склонировать в ```~/.config```
 2. Добавить alias в ```~/.bashrc```:
 ```bash
 alias oc-use="$HOME/.config/opencode-profiles/switch.sh"
@@ -10,13 +10,18 @@ alias oc-use="$HOME/.config/opencode-profiles/switch.sh"
 ```bash
 chmod +x switch.sh
 ```
-4. Использование конкретной настройки opencode:
+
+## Использование
+1. Настройка окружения (на примере микросервисов):
 ```bash
-oc-use microservices   # Включил команду под микросервисы
+oc-use microservices
 ```
+2. Запуск в папке текущего проекта:
 ```bash
-opencode               # Запустил
+opencode
 ```
+3. В правом нижнем углу можно выбрать агента
+4. После работы переключить на обычный режим для других задач
 ```bash
-oc-use default         # Вернул обычный режим для других задач
+oc-use default
 ```
