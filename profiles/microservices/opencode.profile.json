@@ -1,0 +1,66 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "orchestrator",
+  "permission": {
+    "bash": {
+      "ruff *": "allow",
+      "mypy *": "allow",
+      "pytest *": "allow",
+      "npm run check*": "allow",
+      "docker compose ps*": "allow",
+      "docker compose logs*": "allow"
+    }
+  },
+  "agent": {
+    "orchestrator": {
+      "description": "Главный тимлид. Планирует работу и распределяет задачи между субагентами.",
+      "mode": "primary",
+      "prompt": "{file:./prompts/orchestrator.md}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    },
+    "architect": {
+      "description": "Проектирует микросервисы, контракты API, БД, Keycloak и docker-compose.yml.",
+      "mode": "all",
+      "prompt": "{file:./prompts/architect.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "backend": {
+      "description": "Пишет микросервисы на Python, FastAPI, SQLAlchemy и интегрирует Keycloak.",
+      "mode": "all",
+      "prompt": "{file:./prompts/backend.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "frontend": {
+      "description": "Пишет клиент на Svelte 5 / SvelteKit и подключает авторизацию Keycloak.",
+      "mode": "all",
+      "prompt": "{file:./prompts/frontend.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "qa-devops": {
+      "description": "Пишет тесты, поднимает Docker Compose, настраивает прод и CI/CD.",
+      "mode": "all",
+      "prompt": "{file:./prompts/qa-devops.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

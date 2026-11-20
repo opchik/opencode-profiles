@@ -1,0 +1,12 @@
+# Runtime-артефакты, которые opencode создаёт в папке профиля при запуске
+node_modules/
+package.json
+package-lock.json
+bun.lock
+profiles/*/.gitignore
+
+# Сгенерированный и личный конфиг
+profiles/*/opencode.json
+profiles/*/opencode.local.json
+
+creds/
