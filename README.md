@@ -20,11 +20,11 @@
 ```bash
 git clone <url> ~/.config/opencode-profiles
 ```
-2. Создать файлы с адресом и ключом своего vLLM-хоста (один раз, общие для всех профилей):
+2. Создать файлы с адресом и ключом DeepSeek-эндпоинта (один раз, общие для всех профилей):
 ```bash
-echo "http://<host>:8000/v1" > ~/.opencode.url
-echo "<api-key>" > ~/.opencode.key
-chmod 600 ~/.opencode.url ~/.opencode.key
+echo "https://api.deepseek.com/v1" > ~/.deepseek.url
+echo "<api-key>" > ~/.deepseek.key
+chmod 600 ~/.deepseek.url ~/.deepseek.key
 ```
 3. Добавить alias в `~/.bashrc`:
 ```bash
@@ -50,9 +50,26 @@ oc-use default
 
 ## Личный конфиг
 
-`oc-use <профиль>` при первом переключении создаёт `profiles/<профиль>/opencode.local.json` из `shared/opencode.local.example.json`. Отредактируйте его под свой хост: имя провайдера, ID и название модели, лимиты контекста. Адрес и ключ читаются из `~/.opencode.url` / `~/.opencode.key` (подстановка `{file:...}`), в самом конфиге секретов нет.
+`oc-use <профиль>` при первом переключении создаёт `profiles/<профиль>/opencode.local.json` из `shared/opencode.local.example.json`. Отредактируйте его под свой эндпоинт: имя провайдера, ID и название модели, лимиты контекста. Адрес и ключ читаются из `~/.deepseek.url` / `~/.deepseek.key` (подстановка `{file:...}`), в самом конфиге секретов нет.
 
-Файл можно переиспользовать между профилями: содержимое `opencode.local.json` у всех профилей одинаковое, если хост один.
+Файл можно переиспользовать между профилями: содержимое `opencode.local.json` у всех профилей одинаковое, если эндпоинт один.
+
+## Профиль microservices
+
+Профиль для разработки fullstack-приложения на микросервисах (FastAPI + PostgreSQL + Keycloak + Svelte 5). Все агенты используют единую модель из `opencode.local.json` (`deepseek/DeepSeek-V4.1-Flash-1017`).
+
+Пайплайн с двумя контрольными точками:
+
+1. `@orchestrator` (по умолчанию) изучает идею и пишет подробное ТЗ в `SPEC.md`. Код и конфиги он не пишет — только документы.
+2. **Контрольная точка 1:** вы читаете и одобряете `SPEC.md`. До одобрения работа не продолжается.
+3. После одобрения последовательно запускаются:
+   - `@architect` — `docker-compose.yml`, `infra/keycloak/realm-export.json`, init БД, `.env.example`, OpenAPI-контракты;
+   - `@backend` — микросервисы в `services/**`;
+   - `@frontend` — клиент в `frontend/**`.
+4. **Контрольная точка 2:** вы запускаете и тестируете дизайн.
+5. После согласия `@qa-devops` пишет тесты, проверяет стек в Docker, настраивает `docker-compose.prod.yml`, скрипт деплоя на боевой сервер и CI/CD.
+
+Промпты агентов — в `profiles/microservices/prompts/`, правила стека — в `profiles/microservices/AGENTS.md`.
 
 ## Новый профиль
 

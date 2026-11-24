@@ -1,23 +1,27 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "my-host/qwen3.8-27b",
-  "provider": {
-    "my-host": {
-      "name": "My vLLM Host",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "{file:~/.opencode.url}",
-        "apiKey": "{file:~/.opencode.key}"
+  "model": "deepseek/deepseek-flash",
+  "providers": {
+    "deepseek": {
+      "name": "DeepSeek",
+      "package": "@ai-sdk/openai-compatible",
+      "settings": {
+        "baseURL": "{file:~/.deepseek.url}",
+        "apiKey": "{file:~/.deepseek.key}"
       },
       "models": {
-        "qwen3.8-27b": {
-          "name": "Qwen 3.8 27B (vLLM)",
+        "deepseek-flash": {
+          "name": "DeepSeek-V4.1-Flash-1017",
           "limit": {
-            "context": 100144,
+            "context": 128000,
             "output": 32768
           },
-          "tool_call": true,
-          "reasoning": true
+          "capabilities": {
+            "tools": true,
+            "reasoning": {
+              "supported": true
+            }
+          }
         }
       }
     }

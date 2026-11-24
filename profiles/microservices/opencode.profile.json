@@ -3,63 +3,148 @@
   "default_agent": "orchestrator",
   "permission": {
     "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
       "ruff *": "allow",
       "mypy *": "allow",
       "pytest *": "allow",
       "npm run check*": "allow",
+      "npm run build*": "allow",
       "docker compose ps*": "allow",
       "docker compose logs*": "allow"
     }
   },
   "agent": {
     "orchestrator": {
-      "description": "Главный тимлид. Планирует работу и распределяет задачи между субагентами.",
+      "description": "Главный тимлид. Пишет подробное ТЗ (SPEC.md), проводит контрольные точки и последовательно запускает субагентов. Код не пишет.",
       "mode": "primary",
+      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
       "prompt": "{file:./prompts/orchestrator.md}",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "bash": false
+      "permission": {
+        "bash": "deny",
+        "task": "allow",
+        "edit": {
+          "**": "deny",
+          "*": "deny",
+          "*.md": "allow",
+          "**/*.md": "allow",
+          "SPEC.md": "allow",
+          "docs/**": "allow"
+        }
       }
     },
     "architect": {
-      "description": "Проектирует микросервисы, контракты API, БД, Keycloak и docker-compose.yml.",
+      "description": "Превращает утверждённое ТЗ в инфраструктуру: docker-compose, Keycloak realm, init БД, .env, OpenAPI-контракты. Бизнес-код не пишет.",
       "mode": "all",
+      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
       "prompt": "{file:./prompts/architect.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": false
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "jq *": "allow",
+          "python3 -m json.tool*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow"
+        },
+        "task": "deny",
+        "edit": {
+          "**": "deny",
+          "*": "deny",
+          "*.md": "allow",
+          "**/*.md": "allow",
+          "SPEC.md": "allow",
+          "docs/**": "allow",
+          "infra/**": "allow",
+          "docker-compose*.yml": "allow",
+          "docker-compose*.yaml": "allow",
+          ".env*": "allow",
+          "Makefile": "allow"
+        }
       }
     },
     "backend": {
-      "description": "Пишет микросервисы на Python, FastAPI, SQLAlchemy и интегрирует Keycloak.",
+      "description": "Реализует микросервисы на Python/FastAPI/SQLAlchemy по ТЗ и интегрирует Keycloak.",
       "mode": "all",
+      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
       "prompt": "{file:./prompts/backend.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "ruff *": "allow",
+          "mypy *": "allow",
+          "pytest *": "allow",
+          "uv *": "allow",
+          "python *": "allow",
+          "python3 *": "allow",
+          "alembic *": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "docker compose ps*": "allow",
+          "docker compose logs*": "allow"
+        },
+        "task": "deny",
+        "edit": {
+          "**": "deny",
+          "*": "deny",
+          "services/**": "allow",
+          "SPEC.md": "allow",
+          "docs/**": "allow"
+        }
       }
     },
     "frontend": {
-      "description": "Пишет клиент на Svelte 5 / SvelteKit и подключает авторизацию Keycloak.",
+      "description": "Реализует клиент на Svelte 5 / SvelteKit и подключает авторизацию Keycloak.",
       "mode": "all",
+      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
       "prompt": "{file:./prompts/frontend.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "npm *": "allow",
+          "npx *": "allow",
+          "bun *": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "docker compose ps*": "allow",
+          "docker compose logs*": "allow"
+        },
+        "task": "deny",
+        "edit": {
+          "**": "deny",
+          "*": "deny",
+          "frontend/**": "allow",
+          "SPEC.md": "allow",
+          "docs/**": "allow"
+        }
       }
     },
     "qa-devops": {
-      "description": "Пишет тесты, поднимает Docker Compose, настраивает прод и CI/CD.",
+      "description": "Пишет тесты, проверяет стек в Docker, настраивает прод, скрипт деплоя на боевой сервер и CI/CD.",
       "mode": "all",
+      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
       "prompt": "{file:./prompts/qa-devops.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "docker *": "allow",
+          "docker compose *": "allow",
+          "pytest *": "allow",
+          "ruff *": "allow",
+          "mypy *": "allow",
+          "npm *": "allow",
+          "npx *": "allow",
+          "bun *": "allow",
+          "bash scripts/*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow"
+        },
+        "task": "deny",
+        "edit": "allow"
       }
     }
   }

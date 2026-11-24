@@ -22,7 +22,7 @@ command -v jq >/dev/null 2>&1 || {
 if [ ! -f "$PROFILES_DIR/$PROFILE/opencode.local.json" ]; then
   cp "$SHARED_DIR/opencode.local.example.json" "$PROFILES_DIR/$PROFILE/opencode.local.json"
   echo "Создан личный конфиг: $PROFILES_DIR/$PROFILE/opencode.local.json"
-  echo "Заполните его под свой vLLM-хост и модель (url/key берутся из ~/.opencode.url и ~/.opencode.key)."
+  echo "Заполните его под свой эндпоинт и модель (url/key берутся из ~/.deepseek.url и ~/.deepseek.key)."
 fi
 
 # Если ~/.config/opencode — обычная папка (создалась при первом запуске), сохраняем бэкап
