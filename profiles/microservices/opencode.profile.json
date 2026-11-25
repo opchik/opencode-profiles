@@ -1,6 +1,18 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "orchestrator",
+  "mcp": {
+    "servers": {
+      "web-search": {
+        "type": "local",
+        "command": ["npx", "-y", "open-websearch@latest"],
+        "environment": {
+          "MODE": "stdio",
+          "DEFAULT_SEARCH_ENGINE": "duckduckgo"
+        }
+      }
+    }
+  },
   "permission": {
     "bash": {
       "*": "ask",
@@ -20,7 +32,7 @@
     "orchestrator": {
       "description": "Главный тимлид. Пишет подробное ТЗ (SPEC.md), проводит контрольные точки и последовательно запускает субагентов. Код не пишет.",
       "mode": "primary",
-      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
+      "model": "deepseek/deepseek-flash",
       "prompt": "{file:./prompts/orchestrator.md}",
       "permission": {
         "bash": "deny",
@@ -38,7 +50,7 @@
     "architect": {
       "description": "Превращает утверждённое ТЗ в инфраструктуру: docker-compose, Keycloak realm, init БД, .env, OpenAPI-контракты. Бизнес-код не пишет.",
       "mode": "all",
-      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
+      "model": "deepseek/deepseek-flash",
       "prompt": "{file:./prompts/architect.md}",
       "permission": {
         "bash": {
@@ -67,7 +79,7 @@
     "backend": {
       "description": "Реализует микросервисы на Python/FastAPI/SQLAlchemy по ТЗ и интегрирует Keycloak.",
       "mode": "all",
-      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
+      "model": "deepseek/deepseek-flash",
       "prompt": "{file:./prompts/backend.md}",
       "permission": {
         "bash": {
@@ -98,7 +110,7 @@
     "frontend": {
       "description": "Реализует клиент на Svelte 5 / SvelteKit и подключает авторизацию Keycloak.",
       "mode": "all",
-      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
+      "model": "deepseek/deepseek-flash",
       "prompt": "{file:./prompts/frontend.md}",
       "permission": {
         "bash": {
@@ -125,7 +137,7 @@
     "qa-devops": {
       "description": "Пишет тесты, проверяет стек в Docker, настраивает прод, скрипт деплоя на боевой сервер и CI/CD.",
       "mode": "all",
-      "model": "deepseek/DeepSeek-V4.1-Flash-1017",
+      "model": "deepseek/deepseek-flash",
       "prompt": "{file:./prompts/qa-devops.md}",
       "permission": {
         "bash": {

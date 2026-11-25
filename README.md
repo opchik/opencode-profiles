@@ -56,7 +56,7 @@ oc-use default
 
 ## Профиль microservices
 
-Профиль для разработки fullstack-приложения на микросервисах (FastAPI + PostgreSQL + Keycloak + Svelte 5). Все агенты используют единую модель из `opencode.local.json` (`deepseek/DeepSeek-V4.1-Flash-1017`).
+Профиль для разработки fullstack-приложения на микросервисах (FastAPI + PostgreSQL + Keycloak + Svelte 5). Все агенты используют единую модель из `opencode.local.json` (`deepseek/deepseek-flash`, отображаемое имя — `DeepSeek-V4.1-Flash-1017`).
 
 Пайплайн с двумя контрольными точками:
 
